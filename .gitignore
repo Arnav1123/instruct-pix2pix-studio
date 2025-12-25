@@ -42,6 +42,7 @@ desktop.ini
 # Outputs (generated images)
 outputs/*
 !outputs/.gitkeep
+!outputs/favorites/
 
 # Favorites
 outputs/favorites/*
