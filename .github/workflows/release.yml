@@ -1,4 +1,4 @@
-name: 🚀 Автоматический релиз
+name: Release
 
 on:
   push:
@@ -10,20 +10,62 @@ permissions:
 
 jobs:
   release:
-    name: 📦 Создание релиза
+    name: Create Release
     runs-on: ubuntu-latest
     
     steps:
-      - name: 📥 Checkout
+      - name: Checkout
         uses: actions/checkout@v4
-        
-      - name: 📋 Получить информацию о теге
+        with:
+          fetch-depth: 0
+          
+      - name: Get tag info
         id: tag_info
         run: |
           echo "tag=${GITHUB_REF#refs/tags/}" >> $GITHUB_OUTPUT
           echo "date=$(date +'%Y-%m-%d')" >> $GITHUB_OUTPUT
           
-      - name: 📦 Создать архив
+      - name: Generate changelog
+        id: changelog
+        run: |
+          # Get previous tag
+          PREV_TAG=$(git describe --tags --abbrev=0 HEAD^ 2>/dev/null || echo "")
+          
+          if [ -z "$PREV_TAG" ]; then
+            COMMITS=$(git log --pretty=format:"- %s (%h)" --no-merges)
+          else
+            COMMITS=$(git log ${PREV_TAG}..HEAD --pretty=format:"- %s (%h)" --no-merges)
+          fi
+          
+          # Categorize commits
+          FEATURES=$(echo "$COMMITS" | grep -i "feat\|add\|new" || true)
+          FIXES=$(echo "$COMMITS" | grep -i "fix\|bug\|patch" || true)
+          DOCS=$(echo "$COMMITS" | grep -i "doc\|readme" || true)
+          OTHER=$(echo "$COMMITS" | grep -iv "feat\|add\|new\|fix\|bug\|patch\|doc\|readme" || true)
+          
+          # Build changelog
+          CHANGELOG=""
+          
+          if [ -n "$FEATURES" ]; then
+            CHANGELOG="${CHANGELOG}### New Features\n${FEATURES}\n\n"
+          fi
+          
+          if [ -n "$FIXES" ]; then
+            CHANGELOG="${CHANGELOG}### Bug Fixes\n${FIXES}\n\n"
+          fi
+          
+          if [ -n "$DOCS" ]; then
+            CHANGELOG="${CHANGELOG}### Documentation\n${DOCS}\n\n"
+          fi
+          
+          if [ -n "$OTHER" ]; then
+            CHANGELOG="${CHANGELOG}### Other Changes\n${OTHER}\n\n"
+          fi
+          
+          # Save to file for multiline output
+          echo -e "$CHANGELOG" > changelog.md
+          
+      - name: Create archive
         run: |
           mkdir -p release
           zip -r release/instruct-pix2pix-studio-${{ steps.tag_info.outputs.tag }}.zip \
@@ -35,40 +77,19 @@ jobs:
             run.bat \
             README.md \
             LICENSE \
+            CHANGELOG.md \
+            CONTRIBUTING.md \
             -x "*.pyc" -x "__pycache__/*" -x "*.egg-info/*"
             
-      - name: 🎉 Создать GitHub Release
+      - name: Create GitHub Release
         uses: softprops/action-gh-release@v1
         with:
-          name: "🎨 InstructPix2Pix Studio ${{ steps.tag_info.outputs.tag }}"
-          body: |
-            ## 🎨 InstructPix2Pix Studio ${{ steps.tag_info.outputs.tag }}
-            
-            **Дата релиза:** ${{ steps.tag_info.outputs.date }}
-            
-            ### 📥 Установка
-            
-            1. Скачай архив ниже
-            2. Распакуй в любую папку
-            3. Запусти `setup.bat` для установки зависимостей
-            4. Запусти `run.bat` для старта приложения
-            5. Открой http://localhost:7860 в браузере
-            
-            ### 💻 Требования
-            
-            - Windows 10/11
-            - Python 3.10+
-            - AMD RX 5000+ или NVIDIA GTX 1060+ (опционально)
-            - 16 ГБ RAM
-            
-            ### 📝 Изменения
-            
-            Смотри [CHANGELOG](https://github.com/randomu3/instruct-pix2pix-studio/commits/${{ steps.tag_info.outputs.tag }})
-            
+          name: "InstructPix2Pix Studio ${{ steps.tag_info.outputs.tag }}"
+          body_path: changelog.md
           files: |
             release/instruct-pix2pix-studio-${{ steps.tag_info.outputs.tag }}.zip
           draft: false
-          prerelease: false
+          prerelease: ${{ contains(steps.tag_info.outputs.tag, 'alpha') || contains(steps.tag_info.outputs.tag, 'beta') || contains(steps.tag_info.outputs.tag, 'rc') }}
           generate_release_notes: true
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

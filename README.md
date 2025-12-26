@@ -1,167 +1,179 @@
-# ✨ InstructPix2Pix Studio
+# InstructPix2Pix Studio
 
 <div align="center">
 
 ![Python](https://img.shields.io/badge/Python-3.10+-blue?style=for-the-badge&logo=python)
 ![PyTorch](https://img.shields.io/badge/PyTorch-2.0+-red?style=for-the-badge&logo=pytorch)
 ![Gradio](https://img.shields.io/badge/Gradio-4.0+-orange?style=for-the-badge&logo=gradio)
-![License](https://img.shields.io/badge/Лицензия-MIT-green?style=for-the-badge)
+![License](https://img.shields.io/badge/License-MIT-green?style=for-the-badge)
 
-**AI-редактор изображений с современным glassmorphism интерфейсом**
+**AI-powered image editing with a modern glassmorphism interface**
 
-[Возможности](#-возможности) • [Установка](#-установка) • [Использование](#-использование) • [Скриншоты](#-скриншоты)
+[Features](#features) | [Installation](#installation) | [Usage](#usage) | [Screenshots](#screenshots)
 
 </div>
 
 ---
 
-## 🎨 Возможности
+## Features
 
-- 🖼️ **Редактирование изображений с AI** — Трансформируй изображения с помощью текстовых инструкций
-- 🎮 **Поддержка AMD GPU** — DirectML ускорение для видеокарт AMD (RX 6000/7000)
-- ⚡ **12 быстрых пресетов** — Акварель, Зима, Аниме, Масло и другие
-- 📦 **Batch генерация** — Создавай несколько вариаций с разными seed
-- 🔍 **Сравнение до/после** — Просмотр оригинала и результата рядом
-- ⭐ **Избранное** — Сохраняй лучшие генерации
-- 💾 **Автосохранение** — Все результаты сохраняются автоматически с полным логом
-- 🎯 **Умные пресеты** — Быстрый/Баланс/Качество для разных задач
-- 🌙 **Современный тёмный UI** — Glassmorphism дизайн с плавными анимациями
+- **AI Image Editing** — Transform images using natural language instructions
+- **AMD GPU Support** — DirectML acceleration for AMD GPUs (RX 6000/7000 series)
+- **NVIDIA CUDA Support** — Full CUDA acceleration for NVIDIA GPUs
+- **12 Quick Presets** — Watercolor, Winter, Anime, Oil painting and more
+- **Batch Generation** — Create multiple variations with different seeds
+- **Before/After Comparison** — Side-by-side view of original and result
+- **Favorites** — Save your best generations
+- **Auto-save** — All results saved automatically with full logging
+- **Smart Presets** — Fast/Balanced/Quality modes for different needs
+- **Modern Dark UI** — Glassmorphism design with smooth animations
 
-## 💻 Системные требования
+## System Requirements
 
-| Компонент | Минимум | Рекомендуется |
-|-----------|---------|---------------|
-| **ОС** | Windows 10/11 | Windows 11 |
-| **CPU** | 8 ядер | 16+ ядер (Ryzen 5000/7000) |
-| **RAM** | 16 ГБ | 32 ГБ |
+| Component | Minimum | Recommended |
+|-----------|---------|-------------|
+| **OS** | Windows 10/11 | Windows 11 |
+| **RAM** | 16 GB | 32 GB |
 | **GPU** | AMD RX 5000+ / NVIDIA GTX 1060+ | AMD RX 6800+ / NVIDIA RTX 3070+ |
-| **VRAM** | 8 ГБ | 16 ГБ |
-| **Диск** | 10 ГБ свободно | SSD рекомендуется |
+| **VRAM** | 8 GB | 16 GB |
+| **Disk** | 10 GB free | SSD recommended |
 
-## 🚀 Установка
+> **Note:** GPU is required. CPU-only mode is not supported due to extremely long generation times.
+
+## Installation
 
 ### Windows (AMD GPU)
 
 ```bash
-# Клонируй репозиторий
+# Clone the repository
 git clone https://github.com/randomu3/instruct-pix2pix-studio.git
 cd instruct-pix2pix-studio
 
-# Запусти установку (создаст venv и установит зависимости)
+# Run setup (creates venv and installs dependencies)
 setup.bat
 
-# Запусти приложение
+# Launch the application
 run.bat
 ```
 
-### Ручная установка
+### Manual Installation
 
 ```bash
-# Создай виртуальное окружение
+# Create virtual environment
 python -m venv venv_win
 venv_win\Scripts\activate
 
-# Установи зависимости
+# Install dependencies
 pip install -r requirements-windows.txt
 
-# Запусти
+# Launch
 python app.py
 ```
 
-## 📖 Использование
+## Usage
 
-1. **Открой** http://localhost:7860 в браузере
-2. **Загрузи** изображение
-3. **Введи** инструкцию на английском (например, "make it winter with snow")
-4. **Нажми** "✨ Генерировать"
-5. **Подожди** ~20-40 секунд для результата
+1. **Open** http://localhost:7860 in your browser
+2. **Upload** an image
+3. **Enter** an instruction in English (e.g., "make it winter with snow")
+4. **Click** "Generate"
+5. **Wait** ~20-40 seconds for the result
 
-### 💡 Советы для лучших результатов
+### Tips for Best Results
 
-| Делай ✅ | Не делай ❌ |
+| Do | Don't |
 |----------|------------|
-| Используй чёткие инструкции | Размытые описания |
+| Use clear instructions | Vague descriptions |
 | "Add sunglasses to the person" | "Make it better" |
 | "Turn into watercolor painting" | "Change the style" |
 | "Make the sky sunset orange" | "Different colors" |
 
-### ⚙️ Описание параметров
+### Parameter Guide
 
-| Параметр | Описание | Рекомендуется |
+| Parameter | Description | Recommended |
 |----------|----------|---------------|
-| **Шаги** | Больше = лучше качество, медленнее | 20-25 |
-| **Image CFG** | Выше = больше сохраняется оригинал | 1.3-1.8 |
-| **Text CFG** | Выше = точнее следует промпту | 7-9 |
-| **Seed** | -1 для случайного, или число для воспроизводимости | -1 |
+| **Steps** | More = better quality, slower | 20-25 |
+| **Image CFG** | Higher = preserves more of original | 1.3-1.8 |
+| **Text CFG** | Higher = follows prompt more closely | 7-9 |
+| **Seed** | -1 for random, or specific number for reproducibility | -1 |
 
-## 📸 Скриншоты
+## Screenshots
 
 <details>
-<summary>Нажми чтобы развернуть</summary>
+<summary>Click to expand</summary>
 
-### Главный интерфейс
-Современный glassmorphism UI с градиентными акцентами.
+### Main Interface
+Modern glassmorphism UI with gradient accents.
 
-### Batch генерация
-Создание нескольких вариаций за раз.
+### Batch Generation
+Create multiple variations at once.
 
-### Настройки
-Информация о системе и параметры.
+### Settings
+System information and parameters.
 
 </details>
 
-## 🗂️ Структура проекта
+## Project Structure
 
 ```
 instruct-pix2pix-studio/
-├── app.py              # Точка входа
+├── app.py              # Entry point
 ├── src/
-│   ├── generator.py    # Логика генерации
-│   ├── pipeline.py     # Загрузка модели и определение устройства
-│   ├── ui.py           # Gradio интерфейс
-│   ├── styles.py       # Кастомный CSS
-│   ├── presets.py      # Пресеты промптов и настроек
-│   └── storage.py      # Сохранение файлов и логирование
-├── outputs/            # Сгенерированные изображения (в gitignore)
-│   └── favorites/      # Избранное
+│   ├── generator.py    # Generation logic
+│   ├── pipeline.py     # Model loading and device detection
+│   ├── ui.py           # Gradio interface
+│   ├── styles.py       # Custom CSS
+│   ├── presets.py      # Prompt and settings presets
+│   └── storage.py      # File saving and logging
+├── outputs/            # Generated images (gitignored)
+│   └── favorites/      # Favorites
 ├── requirements-windows.txt
-├── setup.bat           # Скрипт установки для Windows
-└── run.bat             # Скрипт запуска для Windows
+├── setup.bat           # Windows setup script
+└── run.bat             # Windows launch script
 ```
 
-## 🔧 Решение проблем
+## Troubleshooting
 
-### "DirectML не найден"
+### "DirectML not found"
 ```bash
 pip install torch-directml
 ```
 
-### "Недостаточно памяти"
-- Уменьши шаги до 15-20
-- Закрой другие программы использующие GPU
-- Перезапусти приложение
+### "Out of memory"
+- Reduce steps to 15-20
+- Close other GPU-intensive applications
+- Restart the application
 
-### Медленная генерация
-- Убедись что используется GPU (смотри вывод в консоли)
-- AMD DirectML: ~20-40 сек на изображение
-- CPU fallback: ~1-2 мин на изображение
+### Slow generation
+- Ensure GPU is being used (check console output)
+- AMD DirectML: ~20-40 sec per image
+- NVIDIA CUDA: ~5-15 sec per image
 
-## 📝 Лицензия
+## Contributing
 
-MIT License — свободно используй, модифицируй и распространяй.
+Contributions are welcome! Please read our [Contributing Guidelines](CONTRIBUTING.md) before submitting a PR.
 
-## 🙏 Благодарности
+1. Fork the repository
+2. Create your feature branch (`git checkout -b feature/amazing-feature`)
+3. Commit your changes using [Conventional Commits](https://www.conventionalcommits.org/)
+4. Push to the branch (`git push origin feature/amazing-feature`)
+5. Open a Pull Request
 
-- [InstructPix2Pix](https://github.com/timbrooks/instruct-pix2pix) — Оригинальная модель от Tim Brooks
-- [Hugging Face Diffusers](https://github.com/huggingface/diffusers) — Реализация pipeline
-- [Gradio](https://gradio.app/) — Фреймворк для веб-интерфейса
+## License
+
+MIT License — free to use, modify and distribute.
+
+## Acknowledgments
+
+- [InstructPix2Pix](https://github.com/timbrooks/instruct-pix2pix) — Original model by Tim Brooks
+- [Hugging Face Diffusers](https://github.com/huggingface/diffusers) — Pipeline implementation
+- [Gradio](https://gradio.app/) — Web interface framework
 
 ---
 
 <div align="center">
 
-**Сделано с ❤️ для AI-арт сообщества**
+**Made for the AI art community**
 
-⭐ Поставь звезду если проект полезен!
+If you find this project useful, please consider giving it a star!
 
 </div>

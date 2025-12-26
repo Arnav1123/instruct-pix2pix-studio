@@ -1,13 +1,12 @@
 #!/usr/bin/env python3
 """
-Qwen Image Edit Studio
-Main entry point for the application
+InstructPix2Pix Studio
+AI-powered image editing application
 """
 
 from src.pipeline import load_pipeline
 from src.ui import create_ui
-from src.styles import CUSTOM_CSS
-import gradio as gr
+
 
 def main():
     # Pre-load the pipeline
@@ -21,6 +20,7 @@ def main():
         share=False,
         show_error=True
     )
+
 
 if __name__ == "__main__":
     main()

@@ -1,3 +1,7 @@
+"""
+Pipeline loading and device management
+GPU-only mode (CUDA/DirectML)
+"""
 import torch
 import gc
 import os
@@ -5,80 +9,94 @@ from diffusers import StableDiffusionInstructPix2PixPipeline
 
 _pipeline = None
 _device = None
-_device_type = None  # "cuda", "directml", "cpu"
+_device_type = None  # "cuda", "directml"
+_available_devices = []
 
-# Настройки для Ryzen 5950X (16 ядер / 32 потока)
-NUM_THREADS = 28
-NUM_INTEROP = 12
+
+def detect_available_devices():
+    """Detect all available GPU devices"""
+    global _available_devices
+    _available_devices = []
+    
+    # Check CUDA
+    if torch.cuda.is_available():
+        _available_devices.append("cuda")
+    
+    # Check DirectML
+    try:
+        import torch_directml
+        torch_directml.device()
+        _available_devices.append("directml")
+    except:
+        pass
+    
+    return _available_devices
+
+
+def get_available_devices():
+    """Get list of available devices"""
+    global _available_devices
+    if not _available_devices:
+        detect_available_devices()
+    return _available_devices
 
 
 def get_device():
-    """Определяем лучшее устройство: CUDA/ROCm > DirectML > CPU"""
+    """Determine best device: CUDA/ROCm > DirectML"""
     global _device, _device_type
     if _device is not None:
         return _device
     
-    # 1. Проверяем CUDA (NVIDIA) или ROCm (AMD Linux)
+    # 1. Check CUDA (NVIDIA) or ROCm (AMD Linux)
     if torch.cuda.is_available():
         device_name = torch.cuda.get_device_name(0)
         vram = torch.cuda.get_device_properties(0).total_memory / (1024**3)
-        print(f"🎮 GPU найден: {device_name} ({vram:.1f}GB VRAM)")
+        print(f"[GPU] Found: {device_name} ({vram:.1f}GB VRAM)")
         _device = torch.device("cuda")
         _device_type = "cuda"
         return _device
     
-    # 2. Проверяем DirectML (AMD Windows)
+    # 2. Check DirectML (AMD Windows)
     try:
         import torch_directml
         dml_device = torch_directml.device()
-        print(f"🎮 DirectML GPU найден (AMD Windows)")
+        print(f"[GPU] DirectML device found (AMD Windows)")
         _device = dml_device
         _device_type = "directml"
         return _device
     except ImportError:
         pass
     except Exception as e:
-        print(f"⚠️ DirectML ошибка: {e}")
+        print(f"[Warning] DirectML error: {e}")
     
-    # 3. Fallback на CPU
-    print("💻 GPU не найден, используем CPU (Ryzen 5950X)")
-    _device = torch.device("cpu")
-    _device_type = "cpu"
-    return _device
+    # 3. No GPU found - raise error
+    raise RuntimeError(
+        "No GPU found! This application requires a GPU.\n"
+        "Supported: NVIDIA (CUDA), AMD (DirectML on Windows, ROCm on Linux)\n"
+        "Please install appropriate drivers and PyTorch with GPU support."
+    )
 
 
 def get_device_type():
-    """Возвращает тип устройства: cuda, directml, cpu"""
+    """Returns device type: cuda, directml"""
     global _device_type
     if _device_type is None:
         get_device()
     return _device_type
 
 
-def setup_cpu_optimizations():
-    """Настройка PyTorch для Ryzen 5950X"""
-    torch.set_num_threads(NUM_THREADS)
-    torch.set_num_interop_threads(NUM_INTEROP)
-    
-    os.environ["OMP_NUM_THREADS"] = str(NUM_THREADS)
-    os.environ["MKL_NUM_THREADS"] = str(NUM_THREADS)
-    
-    print(f"🔧 CPU: {NUM_THREADS} threads, {NUM_INTEROP} interop")
-
-
 def clear_memory():
-    """Агрессивная очистка памяти"""
+    """Aggressive memory cleanup"""
     gc.collect()
     gc.collect()
     
-    # Очистка GPU памяти если доступна
     if torch.cuda.is_available():
         torch.cuda.empty_cache()
         torch.cuda.synchronize()
 
 
 def load_pipeline():
-    """Load InstructPix2Pix pipeline - GPU preferred, CPU fallback"""
+    """Load InstructPix2Pix pipeline - GPU only"""
     global _pipeline
 
     if _pipeline is not None:
@@ -87,17 +105,15 @@ def load_pipeline():
     device = get_device()
     device_type = get_device_type()
     
-    print("🚀 Loading InstructPix2Pix pipeline...")
-    print("⏳ First load downloads ~5GB model, please wait...")
+    print("[Pipeline] Loading InstructPix2Pix...")
+    print("[Pipeline] First load downloads ~5GB model, please wait...")
     
-    # Всегда настраиваем CPU (для fallback и data loading)
-    setup_cpu_optimizations()
     clear_memory()
     
     try:
         if device_type == "cuda":
-            # CUDA/ROCm режим
-            print("🎮 Загрузка на CUDA/ROCm GPU (float16)...")
+            # CUDA/ROCm mode
+            print("[Pipeline] Loading on CUDA/ROCm GPU (float16)...")
             
             _pipeline = StableDiffusionInstructPix2PixPipeline.from_pretrained(
                 "timbrooks/instruct-pix2pix",
@@ -112,32 +128,15 @@ def load_pipeline():
             
             try:
                 _pipeline.enable_vae_tiling()
-                print("✅ VAE tiling включен")
+                print("[Pipeline] VAE tiling enabled")
             except Exception:
                 pass
             
-            print("✅ Pipeline на GPU! (~5-15 сек на изображение)")
+            print("[Pipeline] Ready on GPU (~5-15 sec per image)")
             
         elif device_type == "directml":
-            # DirectML режим (AMD Windows) - float32 обязателен!
-            print("🎮 Загрузка на DirectML (AMD Windows, float32)...")
-            
-            _pipeline = StableDiffusionInstructPix2PixPipeline.from_pretrained(
-                "timbrooks/instruct-pix2pix",
-                torch_dtype=torch.float32,  # DirectML не поддерживает float16 полностью
-                safety_checker=None,
-                low_cpu_mem_usage=True,
-            )
-            _pipeline = _pipeline.to(device)
-            
-            # Минимальные оптимизации для DirectML
-            _pipeline.enable_attention_slicing(1)
-            
-            print("✅ Pipeline на DirectML! (~20-40 сек на изображение)")
-            
-        else:
-            # CPU режим
-            print("💻 Загрузка на CPU...")
+            # DirectML mode (AMD Windows) - float32 required
+            print("[Pipeline] Loading on DirectML (AMD Windows, float32)...")
             
             _pipeline = StableDiffusionInstructPix2PixPipeline.from_pretrained(
                 "timbrooks/instruct-pix2pix",
@@ -145,29 +144,15 @@ def load_pipeline():
                 safety_checker=None,
                 low_cpu_mem_usage=True,
             )
+            _pipeline = _pipeline.to(device)
             
             _pipeline.enable_attention_slicing(1)
-            _pipeline.enable_vae_slicing()
             
-            print("✅ Pipeline на CPU (~1-2 мин на изображение)")
+            print("[Pipeline] Ready on DirectML (~20-40 sec per image)")
             
     except Exception as e:
-        print(f"⚠️ Ошибка загрузки: {e}")
-        print("🔄 Пробуем CPU fallback...")
-        
-        clear_memory()
-        _pipeline = StableDiffusionInstructPix2PixPipeline.from_pretrained(
-            "timbrooks/instruct-pix2pix",
-            torch_dtype=torch.float32,
-            safety_checker=None,
-            low_cpu_mem_usage=True,
-        )
-        _pipeline.enable_attention_slicing(1)
-        _pipeline.enable_vae_slicing()
-        
-        global _device_type
-        _device_type = "cpu"
-        print("✅ Pipeline на CPU (fallback)")
+        print(f"[Error] Failed to load pipeline: {e}")
+        raise RuntimeError(f"Failed to load pipeline on GPU: {e}")
     
     _pipeline.set_progress_bar_config(disable=None)
     
@@ -183,5 +168,5 @@ def get_pipeline():
 
 
 def is_gpu_mode():
-    """Проверка работает ли на GPU"""
-    return get_device_type() in ("cuda", "directml")
+    """Check if running on GPU (always True in GPU-only mode)"""
+    return True

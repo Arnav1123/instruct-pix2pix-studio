@@ -3,40 +3,35 @@ chcp 65001 >nul
 title InstructPix2Pix Studio
 
 echo.
-echo ╔══════════════════════════════════════════════════════════╗
-echo ║         🎨 InstructPix2Pix Studio                        ║
-echo ║         AMD 6800XT + Ryzen 5950X Edition                 ║
-echo ╚══════════════════════════════════════════════════════════╝
+echo ========================================================
+echo          InstructPix2Pix Studio
+echo          AI-Powered Image Editing
+echo ========================================================
 echo.
 
-:: CPU настройки для Ryzen 5950X (28 потоков для генерации)
-set OMP_NUM_THREADS=28
-set MKL_NUM_THREADS=28
-set OMP_WAIT_POLICY=ACTIVE
-
-:: Проверяем venv
+:: Check venv
 if not exist "venv_win\Scripts\activate.bat" (
-    echo [!] Virtual environment не найден!
-    echo [!] Запусти сначала: setup.bat
+    echo [ERROR] Virtual environment not found!
+    echo [ERROR] Please run setup.bat first
     pause
     exit /b 1
 )
 
-:: Активируем venv
+:: Activate venv
 call venv_win\Scripts\activate.bat
 
-echo [*] Запуск приложения...
-echo [*] Открой в браузере: http://localhost:7860
+echo [*] Starting application...
+echo [*] Open in browser: http://localhost:7860
 echo.
-echo [!] Для остановки нажми Ctrl+C
+echo [*] Press Ctrl+C to stop
 echo.
 
-:: Запуск с обработкой ошибок
+:: Launch
 python app.py
 
 if errorlevel 1 (
     echo.
-    echo [!] Приложение завершилось с ошибкой
-    echo [!] Проверь установку зависимостей: pip install -r requirements-windows.txt
+    echo [ERROR] Application crashed
+    echo [ERROR] Check dependencies: pip install -r requirements-windows.txt
     pause
 )

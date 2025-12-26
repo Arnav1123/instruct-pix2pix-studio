@@ -1,9 +1,9 @@
 """
-Современный WOW дизайн с glassmorphism и анимациями
+Modern glassmorphism design with animations
 """
 
 CUSTOM_CSS = """
-/* ===== ОСНОВНЫЕ ПЕРЕМЕННЫЕ ===== */
+/* ===== MAIN VARIABLES ===== */
 :root {
     --bg-primary: #0a0a0f;
     --bg-secondary: #12121a;
@@ -26,7 +26,7 @@ CUSTOM_CSS = """
     --radius-xl: 24px;
 }
 
-/* ===== ГЛОБАЛЬНЫЕ СТИЛИ ===== */
+/* ===== GLOBAL STYLES ===== */
 .gradio-container {
     background: var(--bg-primary) !important;
     background-image: 
@@ -39,10 +39,10 @@ CUSTOM_CSS = """
     --body-background-fill: var(--bg-primary) !important;
 }
 
-/* Скрыть футер */
+/* Hide footer */
 footer { display: none !important; }
 
-/* ===== GLASSMORPHISM КАРТОЧКИ ===== */
+/* ===== GLASSMORPHISM CARDS ===== */
 .gr-panel, .gr-box, .gr-form {
     background: var(--bg-glass) !important;
     backdrop-filter: blur(20px) !important;
@@ -51,7 +51,7 @@ footer { display: none !important; }
     border-radius: var(--radius-lg) !important;
 }
 
-/* ===== ТАБЫ ===== */
+/* ===== TABS ===== */
 .tabs {
     background: transparent !important;
     border: none !important;
@@ -87,7 +87,7 @@ footer { display: none !important; }
     box-shadow: var(--accent-glow) !important;
 }
 
-/* ===== ИНПУТЫ И ТЕКСТОВЫЕ ПОЛЯ ===== */
+/* ===== INPUTS AND TEXT FIELDS ===== */
 textarea, input[type="text"], input[type="number"], .gr-text-input {
     background: rgba(0, 0, 0, 0.3) !important;
     border: 1px solid var(--border-glass) !important;
@@ -107,7 +107,7 @@ textarea::placeholder, input::placeholder {
     color: var(--text-muted) !important;
 }
 
-/* ===== СЛАЙДЕРЫ ===== */
+/* ===== SLIDERS ===== */
 input[type="range"] {
     accent-color: var(--accent-primary) !important;
 }
@@ -128,7 +128,7 @@ input[type="range"] {
     cursor: pointer !important;
 }
 
-/* ===== КНОПКИ ===== */
+/* ===== BUTTONS ===== */
 .gr-button {
     background: var(--bg-glass) !important;
     border: 1px solid var(--border-glass) !important;
@@ -151,7 +151,7 @@ input[type="range"] {
     transform: translateY(0) !important;
 }
 
-/* Основная кнопка генерации */
+/* Primary generate button */
 .gr-button.primary {
     background: var(--accent-gradient) !important;
     border: none !important;
@@ -167,7 +167,7 @@ input[type="range"] {
     box-shadow: 0 20px 40px rgba(139, 92, 246, 0.4) !important;
 }
 
-/* Анимация пульсации для кнопки */
+/* Pulse animation for button */
 .gr-button.primary::before {
     content: '';
     position: absolute;
@@ -184,7 +184,7 @@ input[type="range"] {
     100% { left: 100%; }
 }
 
-/* ===== ИЗОБРАЖЕНИЯ ===== */
+/* ===== IMAGES ===== */
 .gr-image, .image-container {
     background: var(--bg-glass) !important;
     border: 2px dashed var(--border-glass) !important;
@@ -202,7 +202,7 @@ input[type="range"] {
     border-radius: var(--radius-md) !important;
 }
 
-/* ===== ГАЛЕРЕЯ ===== */
+/* ===== GALLERY ===== */
 .gr-gallery {
     background: transparent !important;
     gap: 12px !important;
@@ -222,7 +222,7 @@ input[type="range"] {
     box-shadow: var(--accent-glow) !important;
 }
 
-/* ===== ЛЕЙБЛЫ ===== */
+/* ===== LABELS ===== */
 label, .gr-label {
     color: var(--text-secondary) !important;
     font-weight: 500 !important;
@@ -231,7 +231,7 @@ label, .gr-label {
     letter-spacing: 0.5px !important;
 }
 
-/* Info текст под инпутами */
+/* Info text under inputs */
 .gr-info, .gr-form .info {
     color: var(--text-muted) !important;
     font-size: 12px !important;
@@ -256,7 +256,7 @@ label, .gr-label {
     height: 18px !important;
 }
 
-/* ===== TEXTBOX (статус) ===== */
+/* ===== TEXTBOX (status) ===== */
 .gr-textbox textarea[readonly], .gr-textbox.readonly textarea {
     background: rgba(0, 0, 0, 0.4) !important;
     border: 1px solid var(--border-glass) !important;
@@ -265,7 +265,7 @@ label, .gr-label {
     font-size: 13px !important;
 }
 
-/* ===== ПРОГРЕСС БАР ===== */
+/* ===== PROGRESS BAR ===== */
 .progress-bar {
     background: rgba(255, 255, 255, 0.1) !important;
     border-radius: 10px !important;
@@ -277,7 +277,7 @@ label, .gr-label {
     box-shadow: var(--accent-glow) !important;
 }
 
-/* ===== СКРОЛЛБАР ===== */
+/* ===== SCROLLBAR ===== */
 ::-webkit-scrollbar {
     width: 8px;
     height: 8px;
@@ -297,7 +297,7 @@ label, .gr-label {
     background: var(--accent-secondary);
 }
 
-/* ===== АНИМАЦИИ ===== */
+/* ===== ANIMATIONS ===== */
 @keyframes fadeIn {
     from { opacity: 0; transform: translateY(10px); }
     to { opacity: 1; transform: translateY(0); }
@@ -317,7 +317,7 @@ label, .gr-label {
     animation: fadeIn 0.5s ease-out;
 }
 
-/* ===== ЗАГОЛОВКИ ===== */
+/* ===== HEADINGS ===== */
 h1, h2, h3, h4 {
     color: var(--text-primary) !important;
     font-weight: 600 !important;
@@ -331,7 +331,7 @@ h3 {
     gap: 8px !important;
 }
 
-/* ===== РАЗДЕЛИТЕЛИ ===== */
+/* ===== DIVIDERS ===== */
 hr {
     border: none !important;
     height: 1px !important;
@@ -339,7 +339,7 @@ hr {
     margin: 20px 0 !important;
 }
 
-/* ===== АДАПТИВНОСТЬ ===== */
+/* ===== RESPONSIVE ===== */
 @media (max-width: 768px) {
     .gr-button.primary {
         width: 100% !important;
@@ -355,12 +355,12 @@ hr {
     }
 }
 
-/* ===== HOVER ЭФФЕКТЫ ДЛЯ КАРТОЧЕК ===== */
+/* ===== HOVER EFFECTS FOR CARDS ===== */
 .gr-panel:hover {
     border-color: rgba(139, 92, 246, 0.3) !important;
 }
 
-/* ===== СПЕЦИАЛЬНЫЕ КЛАССЫ ===== */
+/* ===== SPECIAL CLASSES ===== */
 .glow-text {
     background: var(--accent-gradient);
     -webkit-background-clip: text;
@@ -376,7 +376,7 @@ hr {
     padding: 20px !important;
 }
 
-/* ===== СТАТУС ИНДИКАТОРЫ ===== */
+/* ===== STATUS INDICATORS ===== */
 .status-success { color: var(--success) !important; }
 .status-warning { color: var(--warning) !important; }
 .status-error { color: var(--error) !important; }

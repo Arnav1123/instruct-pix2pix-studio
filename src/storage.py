@@ -1,5 +1,5 @@
 """
-Модуль для сохранения, логирования и управления файлами
+File saving, logging and management module
 """
 import os
 import json
@@ -7,26 +7,26 @@ from datetime import datetime
 from pathlib import Path
 from PIL import Image
 
-# Папки для сохранения
+# Save directories
 OUTPUT_DIR = Path("outputs")
 FAVORITES_DIR = OUTPUT_DIR / "favorites"
 LOG_FILE = OUTPUT_DIR / "generation_log.json"
 
 
 def ensure_dirs():
-    """Создать необходимые папки"""
+    """Create necessary directories"""
     OUTPUT_DIR.mkdir(exist_ok=True)
     FAVORITES_DIR.mkdir(exist_ok=True)
 
 
 def generate_filename(prefix="gen", ext="png"):
-    """Генерация уникального имени файла"""
+    """Generate unique filename"""
     timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
     return f"{prefix}_{timestamp}.{ext}"
 
 
 def save_image(image: Image.Image, filename=None, quality=95, format="PNG"):
-    """Сохранить изображение в outputs"""
+    """Save image to outputs"""
     ensure_dirs()
     
     if filename is None:
@@ -36,7 +36,7 @@ def save_image(image: Image.Image, filename=None, quality=95, format="PNG"):
     filepath = OUTPUT_DIR / filename
     
     if format.upper() == "JPEG":
-        # Конвертируем в RGB для JPEG
+        # Convert to RGB for JPEG
         if image.mode in ('RGBA', 'P'):
             image = image.convert('RGB')
         image.save(filepath, format="JPEG", quality=quality)
@@ -47,7 +47,7 @@ def save_image(image: Image.Image, filename=None, quality=95, format="PNG"):
 
 
 def save_to_favorites(image: Image.Image, filename=None):
-    """Сохранить в избранное"""
+    """Save to favorites"""
     ensure_dirs()
     
     if filename is None:
@@ -59,7 +59,7 @@ def save_to_favorites(image: Image.Image, filename=None):
 
 
 def log_generation(params: dict):
-    """Логировать генерацию в JSON"""
+    """Log generation to JSON"""
     ensure_dirs()
     
     log_entry = {
@@ -67,7 +67,7 @@ def log_generation(params: dict):
         **params
     }
     
-    # Читаем существующий лог
+    # Read existing log
     logs = []
     if LOG_FILE.exists():
         try:
@@ -78,7 +78,7 @@ def log_generation(params: dict):
     
     logs.append(log_entry)
     
-    # Ограничиваем размер лога (последние 1000 записей)
+    # Limit log size (last 1000 entries)
     if len(logs) > 1000:
         logs = logs[-1000:]
     
@@ -87,7 +87,7 @@ def log_generation(params: dict):
 
 
 def get_generation_history():
-    """Получить историю генераций"""
+    """Get generation history"""
     if not LOG_FILE.exists():
         return []
     
@@ -99,14 +99,14 @@ def get_generation_history():
 
 
 def list_outputs():
-    """Список сохранённых изображений"""
+    """List saved images"""
     ensure_dirs()
     files = list(OUTPUT_DIR.glob("*.png")) + list(OUTPUT_DIR.glob("*.jpg"))
     return sorted(files, key=lambda x: x.stat().st_mtime, reverse=True)
 
 
 def list_favorites():
-    """Список избранных изображений"""
+    """List favorite images"""
     ensure_dirs()
     files = list(FAVORITES_DIR.glob("*.png")) + list(FAVORITES_DIR.glob("*.jpg"))
     return sorted(files, key=lambda x: x.stat().st_mtime, reverse=True)
